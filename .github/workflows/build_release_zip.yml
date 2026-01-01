@@ -24,7 +24,8 @@ jobs:
             git \
             sudo \
             libssl-dev \
-            build-essential
+            build-essential \
+            jq
 
       # Step 3: Make the script executable
       - name: Make scripts executable
@@ -45,13 +46,27 @@ jobs:
           git tag $TAG_NAME
           git push origin $TAG_NAME
           echo $TAG_NAME
-
-
-      # Step 7: Create the release and upload the zip file
+    
       - name: Create GitHub Release and Upload Zip
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ steps.create_git_tag.outputs.tag_name }}  # Use the created tag as release version
-          files: alpine.zip  # Upload the zip file as an asset
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub token to authenticate API request
+        run: |
+          REPO="${{ github.repository }}" 
+          RESPONSE=$(curl -s -X POST "https://api.github.com/repos/${REPO}/releases" \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -d @- <<EOF
+          {
+            "tag_name": "$TAG_NAME",
+            "name": "$TAG_NAME"
+          }
+          EOF
+          )
+
+           UPLOAD_URL=$(echo "$RESPONSE" | jq -r .upload_url | sed -e 's/{?name,label}//')
+
+          # Upload the release asset (the zip file)
+          curl -X POST --data-binary @alpine.zip \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Content-Type: application/zip" \
+            "$UPLOAD_URL?name=alpine.zip"
+

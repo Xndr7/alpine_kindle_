@@ -30,11 +30,13 @@ jobs:
         TAG_NAME="v$(date +'%Y.%m.%d.%H%M%S')"  # Create a version based on date-time
         git tag $TAG_NAME
         git push origin $TAG_NAME
-        echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+      
+
+    - name: Set output 
+      run: echo "::set-output name=tag_name::$TAG_NAME"
 
 
-
-  release:
+  release: 
     needs: build
     runs-on: ubuntu-latest
 
@@ -43,13 +45,13 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Set tag name
-      run: echo "Using tag:${{env.TAG_NAME}}"
+      run: TAG_NAME="v$(date +'%Y.%m.%d.%H%M%S')"  
 
     # Create the GitHub release and upload the zip file
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: ${{env.TAG_NAME}}
+        tag_name: ${{ needs.build.outputs.tag_name }}
         files: alpine.zip
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

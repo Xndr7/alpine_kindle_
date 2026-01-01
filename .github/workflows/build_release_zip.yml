@@ -17,12 +17,12 @@ jobs:
       # Make scripts executable
       - name: Make scripts executable
         run: |
-          chmod +x create_kindle_alpine_image.sh
-          chmod +x create_release.sh
+          chmod +x ./create_kindle_alpine_image.sh
+          chmod +x ./create_release.sh
 
       # Run your bash script
       - name: Run bash script
-        run: create_release.sh
+        run: ./create_release.sh
     
       # Create a new tag based on the current timestamp
       - name: Create a new tag

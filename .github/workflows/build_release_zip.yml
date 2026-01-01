@@ -40,10 +40,9 @@ jobs:
       - name: Create zip file 
         run: |
           echo "alpine version is $ALPINE_VERSION" 
-          TEMP_NAME="alpine$ALPINE_VERSION" 
-          FILE_NAME="${TEMP_NAME//./-}"
-          echo "$FILE_NAME" >> $GITHUB_ENV
-          sudo zip $FILE_NAME.zip ./alpine.conf ./alpine.sh ./alpine.ext3
+          FILE_NAME="alpine$ALPINE_VERSION" 
+          echo "FILE_NAME=$FILE_NAME" >> $GITHUB_ENV
+          sudo zip "$FILE_NAME.zip" ./alpine.conf ./alpine.sh ./alpine.ext3
 
       - name: Create GitHub Release and Upload Zip
         env:

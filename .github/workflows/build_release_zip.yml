@@ -38,15 +38,16 @@ jobs:
           sudo ./create_kindle_alpine_image.sh >> $GITHUB_ENV
 
       - name: Create zip file 
-        run: sudo zip alpine.zip ./alpine.conf ./alpine.sh ./alpine.ext3
+        run: |
+          echo "alpine version is $ALPINE_VERSION" 
+          FILE_NAME="alpine$ALPINE_VERSION.zip" 
+          echo "$FILE_NAME" >> $GITHUB_ENV
+          sudo zip $FILE_NAME.zip ./alpine.conf ./alpine.sh ./alpine.ext3
 
       - name: Create GitHub Release and Upload Zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub token to authenticate API request
         run: |
-          echo "alpine version is $ALPINE_VERSION" 
-          FILE_NAME="alpine$ALPINE_VERSION.zip" 
-          echo "$FILE_NAME" 
           TAG_NAME="v$(date +'%Y.%m%d.%H%M%S')"  # Generate a version tag based on date-time
           git tag $TAG_NAME
           git push origin $TAG_NAME

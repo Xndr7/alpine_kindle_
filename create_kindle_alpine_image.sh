@@ -24,8 +24,7 @@ echo \"nameserver 8.8.8.8\" > /etc/resolv.conf
 mkdir /run/dbus
 apk update
 apk upgrade
-ALPINE_VERSION=$(< /etc/alpine-release)
-echo 'ALPINE_VERSION=$ALPINE_VERSION'
+cat /etc/alpine-release
 apk add openssh vim curl nano git wget tmux net-tools iproute2 sudo bash
 adduser alpine -D
 echo -e \"alpine\nalpine\" | passwd alpine
@@ -133,7 +132,9 @@ chmod +x "$MNT/startgui.sh"
 cp $(which qemu-arm-static) "$MNT/usr/bin/"
 # Chroot and run the setup as specified at the beginning of the script
 echo "Chrooting into Alpine"
-chroot /mnt/alpine/ qemu-arm-static /bin/sh -c "$ALPINESETUP"
+chroot /mnt/alpine/ qemu-arm-static /bin/sh -c "$ALPINESETUP" 
+ALPINE_VERSION="chroot /mnt/alpine/ qemu-arm-static /bin/cat /etc/alpine-release"
+echo "ALPINE_VERSION=('$ALPINE_VERSION')" 
 # Remove the qemu-arm-static binary again, it's not needed on the kindle
 rm "$MNT/usr/bin/qemu-arm-static"
 

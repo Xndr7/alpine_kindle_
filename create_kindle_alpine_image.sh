@@ -18,13 +18,13 @@ REPO="http://dl-cdn.alpinelinux.org/alpine"
 MNT="/mnt/alpine"
 IMAGE="./alpine.ext3"
 IMAGESIZE=2048 #Megabytes
+exec >/dev/null 2>&1
 ALPINESETUP="source /etc/profile
 echo kindle > /etc/hostname
 echo \"nameserver 8.8.8.8\" > /etc/resolv.conf
 mkdir /run/dbus
 apk update
 apk upgrade
-cat /etc/alpine-release
 apk add openssh vim curl nano git wget tmux net-tools iproute2 sudo bash
 adduser alpine -D
 echo -e \"alpine\nalpine\" | passwd alpine

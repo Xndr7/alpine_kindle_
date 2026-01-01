@@ -4,7 +4,7 @@
 # qemu-user-static is required to run arm software using the "qemu-arm-static" command (I suppose you use this script on a X86_64 computer)
 # Please install it via your package manager (e.g. Ubuntu) or whatever way is appropriate for your distribution (Arch has it in AUR)
 
-# BASIC CONIGURATION
+# BASIC CONFIGURATION
 # REPO: The Alpine repository to use, you can leave it like it is
 # MNT: Where you want to mount the image, just make sure /mnt/alpine isn't already used
 # IMAGE: The path and name of the image file to be created, you can leave it as is
@@ -28,6 +28,8 @@ apk update
 apk upgrade
 apk add openssh vim curl nano git wget tmux net-tools iproute2 sudo bash
 apk add desktop-file-utils gtk-engines consolekit gtk-murrine-engine caja caja-extensions marco gnome-themes-extra xorg-server-xephyr xwininfo xdotool xinput dbus-x11
+apk add \$(apk search mate -q | grep -v '\-dev' | grep -v '\-lang' | grep -v '\-doc')
+apk add \$(apk search -q ttf- | grep -v '\-doc')
 apk add onboard chromium
 adduser alpine -D
 echo -e \"alpine\nalpine\" | passwd alpine

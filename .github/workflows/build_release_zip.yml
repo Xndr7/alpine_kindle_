@@ -22,7 +22,7 @@ jobs:
 
       # Run your bash script
       - name: Run bash script
-        run: ./create_release.sh
+        run: create_release.sh
     
       # Create a new tag based on the current timestamp
       - name: Create a new tag
@@ -35,28 +35,4 @@ jobs:
       - name: Set output
         run: echo "::set-output name=tag_name::$TAG_NAME"
 
-  release:
-    needs: build  # Ensure the build job runs before release
-    runs-on: ubuntu-latest
-
-    steps:
-      # Checkout the code in the release job
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Ensure that the tag exists before trying to create the release
-      - name: Fetch all tags
-        run: git fetch --tags  # This makes sure the tags are available in the release job
-
-      # Use the tag name set from the build job
-      - name: Log the tag name from build job
-        run: echo "TAG_NAME=${{ needs.build.outputs.tag_name }}"  # This is just for clarity and logging
-
-      # Create the GitHub release and upload the zip file
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ needs.build.outputs.tag_name }}  # Use the tag created in the build job
-          files: alpine.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  

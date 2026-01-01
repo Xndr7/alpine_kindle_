@@ -25,7 +25,8 @@ mkdir /run/dbus
 apk update
 apk upgrade
 cat /etc/alpine-release
-apk add xorg-server-xephyr xwininfo xdotool xinput dbus-x11 sudo bash nano git
+apk add openssh vim curl nano git wget tmux net-tools iproute2 sudo bash
+apk add xorg-server-xephyr xwininfo xdotool xinput dbus-x11 
 apk add desktop-file-utils gtk-engines consolekit gtk-murrine-engine caja caja-extensions marco gnome-themes-extra
 apk add \$(apk search mate -q | grep -v '\-dev' | grep -v '\-lang' | grep -v '\-doc')
 apk add \$(apk search -q ttf- | grep -v '\-doc')
@@ -37,7 +38,7 @@ addgroup sudo
 addgroup alpine sudo
 su alpine -c \"cd ~
 git init
-git remote add origin https://github.com/schuhumi/alpine_kindle_dotfiles
+git remote add origin https://github.com/Xndr7/Kdot
 git pull origin master
 git reset --hard origin/master
 dconf load /org/mate/ < ~/.config/org_mate.dconf.dump

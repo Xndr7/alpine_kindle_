@@ -70,13 +70,13 @@ killall Xephyr'
 # This tool is used to bootstrap Alpine Linux. It is hosted in the Alpine repositories like any other package, and we need to
 # read in the APKINDEX what version it is currently to get the correct download link. It is extracted in /tmp and deleted
 # again at the end of the script
-echo "Determining version of apk-tools-static"
+#echo "Determining version of apk-tools-static"
 curl "$REPO/latest-stable/main/armhf/APKINDEX.tar.gz" --output /tmp/APKINDEX.tar.gz
 tar -xzf /tmp/APKINDEX.tar.gz -C /tmp
 APKVER="$(cut -d':' -f2 <<<"$(grep -A 5 "P:apk-tools-static" /tmp/APKINDEX | grep "V:")")"  # Grep for the version in APKINDEX
 rm /tmp/APKINDEX /tmp/APKINDEX.tar.gz /tmp/DESCRIPTION # Remove what we downloaded and extracted
-echo "Version of apk-tools-static is: $APKVER"
-echo "Downloading apk-tools-static"
+#echo "Version of apk-tools-static is: $APKVER"
+#echo "Downloading apk-tools-static"
 curl "$REPO/latest-stable/main/armv7/apk-tools-static-$APKVER.apk" --output "/tmp/apk-tools-static.apk"
 tar -xzf "/tmp/apk-tools-static.apk" -C /tmp # extract apk-tools-static to /tmp
 
@@ -84,7 +84,7 @@ tar -xzf "/tmp/apk-tools-static.apk" -C /tmp # extract apk-tools-static to /tmp
 # CREATING IMAGE FILE
 # To create the image file, a file full of zeros with the desired size is created using dd. An ext3-filesystem is created in it.
 # Also automatic checks are disabled using tune2fs
-echo "Creating image file"
+#echo "Creating image file"
 dd if=/dev/zero of="$IMAGE" bs=1M count=$IMAGESIZE
 mkfs.ext3 "$IMAGE"
 tune2fs -i 0 -c 0 "$IMAGE"
@@ -92,7 +92,7 @@ tune2fs -i 0 -c 0 "$IMAGE"
 
 # MOUNTING IMAGE
 # The mountpoint is created (doesn't matter if it exists already) and the empty ext3-filsystem is mounted in it
-echo "Mounting image"
+#echo "Mounting image"
 mkdir -p "$MNT"
 mount -o loop -t ext3 "$IMAGE" "$MNT"
 
@@ -101,7 +101,7 @@ mount -o loop -t ext3 "$IMAGE" "$MNT"
 # Here most of the magic happens. The apk tool we extracted earlier is invoked to create the root filesystem of Alpine inside the
 # mounted image. We use the arm-version of it to end up with a root filesystem for arm. Also the "edge" repository is used
 # to end up with the newest software, some of which is very useful for Kindles
-echo "Bootstrapping Alpine"
+#echo "Bootstrapping Alpine"
 qemu-arm-static /tmp/sbin/apk.static -X "$REPO/edge/main" -U --allow-untrusted --root "$MNT" --initdb add alpine-base
 
 
@@ -131,8 +131,8 @@ chmod +x "$MNT/startgui.sh"
 # Here we run arm-software inside the Alpine container, and thus we need the qemu-arm-static binary in it
 cp $(which qemu-arm-static) "$MNT/usr/bin/"
 # Chroot and run the setup as specified at the beginning of the script
-echo "Chrooting into Alpine"
-chroot /mnt/alpine/ qemu-arm-static /bin/sh -c "$ALPINESETUP" 
+#echo "Chrooting into Alpine"
+chroot /mnt/alpine/ qemu-arm-static /bin/sh -c "$ALPINESETUP" > /dev/null 2>&1
 ALPINE_VERSION="chroot /mnt/alpine/ qemu-arm-static /bin/cat /etc/alpine-release"
 echo "ALPINE_VERSION=('$ALPINE_VERSION')" 
 # Remove the qemu-arm-static binary again, it's not needed on the kindle
@@ -144,20 +144,20 @@ sync
 # Kill remaining processes
 kill $(lsof +f -t "$MNT")
 # We unmount in reverse order
-echo "Unmounting image"
+#echo "Unmounting image"
 umount "$MNT/sys"
 umount "$MNT/proc"
 umount -lf "$MNT/dev"
 umount "$MNT"
 while [[ $(mount | grep "$MNT") ]]
 do
-	echo "Alpine is still mounted, please wait.."
+#	echo "Alpine is still mounted, please wait.."
 	sleep 3
 	umount "$MNT"
 done
-echo "Alpine unmounted"
+#echo "Alpine unmounted"
 
 # And remove the apk-tools-static which we extracted to /tmp
-echo "Cleaning up"
+#echo "Cleaning up"
 rm /tmp/apk-tools-static.apk
 rm -r /tmp/sbin

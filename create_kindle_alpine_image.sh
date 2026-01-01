@@ -137,7 +137,7 @@ chroot /mnt/alpine/ qemu-arm-static /bin/sh -c "$ALPINESETUP"
 ALPINE_VERSION=$(sudo chroot /mnt/alpine cat /etc/alpine-release)
 
 # Print the Alpine version to the host
-echo "Alpine Version inside chroot: $ALPINE_VERSION"
+echo "ALPINE_VERSION=$ALPINE_VERSION" >> $GITHUB_ENV
 # Remove the qemu-arm-static binary again, it's not needed on the kindle
 #echo "ALPINE_VERSION=$ALPINE_VERSION"
 rm "$MNT/usr/bin/qemu-arm-static"

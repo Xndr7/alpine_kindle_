@@ -40,10 +40,10 @@ jobs:
       - name: Create zip file 
         run: |
           echo "alpine version is $ALPINE_VERSION" 
-          TEMP_NAME="alpine$ALPINE_VERSION.zip" 
-          FILE_NAME="${TEMP_NAME//./-}"
+          TEMP_NAME="alpine$ALPINE_VERSION" 
+          FILE_NAME="${TEMP_NAME//./-}.zip"
           echo "$FILE_NAME" >> $GITHUB_ENV
-          sudo zip $FILE_NAME.zip ./alpine.conf ./alpine.sh ./alpine.ext3
+          sudo zip $FILE_NAME ./alpine.conf ./alpine.sh ./alpine.ext3
 
       - name: Create GitHub Release and Upload Zip
         env:
@@ -72,7 +72,7 @@ jobs:
           echo "$UPLOAD_URL" 
 
           # Upload the release asset (the zip file)
-          curl -X POST --data-binary @$FILE_NAME \
+          curl -X POST --data-binary @$FILE_NAME\
             -H "Authorization: token $GITHUB_TOKEN" \
             -H "Content-Type: application/zip" \
             "$UPLOAD_URL?name=$FILE_NAME"

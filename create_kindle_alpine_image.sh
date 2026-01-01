@@ -132,12 +132,11 @@ chmod +x "$MNT/startgui.sh"
 cp $(which qemu-arm-static) "$MNT/usr/bin/"
 # Chroot and run the setup as specified at the beginning of the script
 #echo "Chrooting into Alpine"
-chroot /mnt/alpine/ qemu-arm-static /bin/sh -c "$ALPINESETUP" > /dev/null 2>&1
-ALPINE_VERSION="chroot /mnt/alpine/ qemu-arm-static /bin/sh -c cat /etc/alpine-release"
-echo "ALPINE_VERSION=$ALPINE_VERSION" 
+chroot /mnt/alpine/ qemu-arm-static /bin/sh -c "$ALPINESETUP > /dev/null 2>&1 && echo ALPINE_VERSION=$(cat /etc/alpine-release)"
+
 # Remove the qemu-arm-static binary again, it's not needed on the kindle
 rm "$MNT/usr/bin/qemu-arm-static"
-
+echo "$ALPINE_VERSION"
 # UNMOUNT IMAGE & CLEANUP
 # Sync to disc
 sync

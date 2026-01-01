@@ -27,10 +27,10 @@ mkdir /run/dbus
 apk update
 apk upgrade
 apk add openssh vim curl nano git wget tmux net-tools iproute2 sudo bash
-apk add desktop-file-utils gtk-engines consolekit gtk-murrine-engine caja caja-extensions marco gnome-themes-extra xorg-server-xephyr xwininfo xdotool xinput dbus-x11
-apk add \$(apk search mate -q | grep -v '\-dev' | grep -v '\-lang' | grep -v '\-doc')
-apk add \$(apk search -q ttf- | grep -v '\-doc')
-apk add onboard chromium
+# apk add desktop-file-utils gtk-engines consolekit gtk-murrine-engine caja caja-extensions marco gnome-themes-extra xorg-server-xephyr xwininfo xdotool xinput dbus-x11
+# apk add \$(apk search mate -q | grep -v '\-dev' | grep -v '\-lang' | grep -v '\-doc')
+# apk add \$(apk search -q ttf- | grep -v '\-doc')
+# apk add onboard chromium
 adduser alpine -D
 echo -e \"alpine\nalpine\" | passwd alpine
 echo '%sudo ALL=(ALL) ALL' >> /etc/sudoers

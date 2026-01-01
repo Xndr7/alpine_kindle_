@@ -35,7 +35,7 @@ jobs:
       # Step 4: Run the bash script (with sudo if needed)
       - name: Run bash script to create Alpine image
         run: |
-          sudo ./create_kindle_alpine_image.sh
+          sudo ./create_kindle_alpine_image.sh >> $GITHUB_ENV
 
       - name: Create zip file 
         run: sudo zip alpine.zip ./alpine.conf ./alpine.sh ./alpine.ext3

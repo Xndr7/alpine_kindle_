@@ -44,7 +44,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub token to authenticate API request
         run: |
-          FILE_NAME = "alpine$APKVER.zip" 
+          FILE_NAME="alpine$APKVER.zip" 
           echo "$FILE_NAME" 
           TAG_NAME="v$(date +'%Y.%m%d.%H%M%S')"  # Generate a version tag based on date-time
           git tag $TAG_NAME

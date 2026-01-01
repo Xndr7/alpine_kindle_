@@ -1,0 +1,42 @@
+name: Build and Release Zip
+
+on:
+  push:
+    branches:
+      - 'master' 
+      
+jobs: 
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the code
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # Make scripts executable
+    - name: Make scripts executable
+      run: |
+        chmod +x create_kindle_alpine_image.sh
+        chmod +x create_release.sh
+
+    # Run your first bash script
+    - name: Run first bash script
+      run: ./create_release.sh
+      
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # Create the GitHub release and upload the zip file
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: my-release.zip
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

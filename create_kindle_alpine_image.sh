@@ -135,7 +135,7 @@ cp $(which qemu-arm-static) "$MNT/usr/bin/"
 chroot /mnt/alpine/ qemu-arm-static /bin/sh -c "$ALPINESETUP > /dev/null 2>&1"
 exec >/dev/tty 2>&1
 
-ALPINE_VERSION=$(sudo chroot /mnt/alpine cat /etc/alpine-release 2>/dev/null)
+ALPINE_VERSION=$(sudo chroot /mnt/alpine cat /etc/alpine-release)
 
 # Print the Alpine version to the host
 echo "ALPINE_VERSION=$ALPINE_VERSION" 

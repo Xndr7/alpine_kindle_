@@ -1,38 +1,40 @@
-name: Build and Release Zip
+name: Build Alpine Image
 
 on:
   push:
     branches:
-      - 'master'  # Trigger workflow on push to the 'master' branch
+      - master  # Trigger when pushing to master branch
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # GitHub Actions runner
 
     steps:
-      # Checkout the code
-      - name: Checkout code
+      # Step 1: Checkout the code
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Make scripts executable
+      # Step 2: Install necessary dependencies for the build machine (without X11)
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            qemu-user-static \
+            curl \
+            git \
+            sudo \
+            libssl-dev \
+            build-essential
+
+      # Step 3: Make the script executable
       - name: Make scripts executable
         run: |
           chmod +x ./create_kindle_alpine_image.sh
-          chmod +x ./create_release.sh
 
-      # Run your bash script
-      - name: Run bash script
-        run: ./create_release.sh
-    
-      # Create a new tag based on the current timestamp
-      - name: Create a new tag
+      # Step 4: Run the bash script (with sudo if needed)
+      - name: Run bash script to create Alpine image
         run: |
-          TAG_NAME="v$(date +'%Y.%m.%d.%H%M%S')"  # Create a version based on date-time
-          git tag $TAG_NAME
-          git push origin $TAG_NAME
+          sudo ./create_kindle_alpine_image.sh
 
-      # Set the tag as an output for later use
-      - name: Set output
-        run: echo "::set-output name=tag_name::$TAG_NAME"
 
   

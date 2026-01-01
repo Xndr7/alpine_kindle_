@@ -53,6 +53,7 @@ echo '{
 
 echo \"You're now dropped into an interactive shell in Alpine, feel free to explore and type exit to leave.\"
 sh"
+
 STARTGUI='#!/bin/sh
 chmod a+w /dev/shm # Otherwise the alpine user cannot use this (needed for chromium)
 SIZE=$(xwininfo -root -display :0 | egrep "geometry" | cut -d " "  -f4)
@@ -132,9 +133,9 @@ cp $(which qemu-arm-static) "$MNT/usr/bin/"
 # Chroot and run the setup as specified at the beginning of the script
 echo "Chrooting into Alpine"
 chroot /mnt/alpine/ qemu-arm-static /bin/sh -c "$ALPINESETUP"
+echo "ALPINE_VERSION=$(chroot /mnt/alpine qemu-arm-static /bin/cat /etc/alpine-release)" >> $GITHUB_ENV
 # Remove the qemu-arm-static binary again, it's not needed on the kindle
 rm "$MNT/usr/bin/qemu-arm-static"
-echo "ALPINE_VERSION=$(cat /etc/alpine-release)" >> $GITHUB_ENV
 
 # UNMOUNT IMAGE & CLEANUP
 # Sync to disc

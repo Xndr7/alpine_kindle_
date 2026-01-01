@@ -134,7 +134,7 @@ cp $(which qemu-arm-static) "$MNT/usr/bin/"
 echo "Chrooting into Alpine"
 chroot /mnt/alpine/ qemu-arm-static /bin/sh -c "$ALPINESETUP"
 ALPINE_VERSION=$(chroot /mnt/alpine qemu-arm-static /bin/cat /etc/alpine-release)
-echo "ALPINE_VERSION=$ALPINE_VERSION" >> $GITHUB_ENV
+echo "ALPINE_VERSION=$ALPINE_VERSION" >>  "${{ github.env }}"
 # Remove the qemu-arm-static binary again, it's not needed on the kindle
 rm "$MNT/usr/bin/qemu-arm-static"
 

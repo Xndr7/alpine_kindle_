@@ -48,13 +48,9 @@ jobs:
 
       # Step 7: Create the release and upload the zip file
       - name: Create GitHub Release and Upload Zip
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.create_git_tag.outputs.tag_name }}  # Use the created tag as release version
           files: alpine.zip  # Upload the zip file as an asset
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
-
-  

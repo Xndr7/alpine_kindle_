@@ -53,7 +53,7 @@ jobs:
         run: |
           REPO="${{ github.repository }}" 
           echo "$REPO"
-          echo "$TAG_NAME" 
+          echo "tag name is: $TAG_NAME" 
           RESPONSE=$(curl -s -X POST "https://api.github.com/repos/${REPO}/releases" \
             -H "Authorization: token $GITHUB_TOKEN" \
             -d @- <<EOF

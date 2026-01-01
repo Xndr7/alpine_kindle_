@@ -24,7 +24,7 @@ echo \"nameserver 8.8.8.8\" > /etc/resolv.conf
 mkdir /run/dbus
 apk update
 apk upgrade
-ALPINE_VERSION=$(cat /etc/alpine-release)
+ALPINE_VERSION=$(< /etc/alpine-release)
 echo 'ALPINE_VERSION=$ALPINE_VERSION'
 apk add openssh vim curl nano git wget tmux net-tools iproute2 sudo bash
 adduser alpine -D

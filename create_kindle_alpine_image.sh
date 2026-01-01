@@ -18,6 +18,7 @@ REPO="http://dl-cdn.alpinelinux.org/alpine"
 MNT="/mnt/alpine"
 IMAGE="./alpine.ext3"
 IMAGESIZE=2048 #Megabytes
+exec 3>&1 4>&2
 exec >/dev/null 2>&1
 ALPINESETUP="source /etc/profile
 echo kindle > /etc/hostname
@@ -133,7 +134,7 @@ cp $(which qemu-arm-static) "$MNT/usr/bin/"
 # Chroot and run the setup as specified at the beginning of the script
 #echo "Chrooting into Alpine"
 chroot /mnt/alpine/ qemu-arm-static /bin/sh -c "$ALPINESETUP > /dev/null 2>&1"
-exec >/dev/tty 2>&1
+exec 1>&3 2>&4
 
 ALPINE_VERSION=$(sudo chroot /mnt/alpine cat /etc/alpine-release)
 

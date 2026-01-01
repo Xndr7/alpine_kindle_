@@ -52,6 +52,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub token to authenticate API request
         run: |
           REPO="${{ github.repository }}" 
+          echo "$REPO"
+          
           RESPONSE=$(curl -s -X POST "https://api.github.com/repos/${REPO}/releases" \
             -H "Authorization: token $GITHUB_TOKEN" \
             -d @- <<EOF
@@ -62,7 +64,10 @@ jobs:
           EOF
           )
 
-           UPLOAD_URL=$(echo "$RESPONSE" | jq -r .upload_url | sed -e 's/{?name,label}//')
+          echo "$RESPONSE" 
+
+          UPLOAD_URL=$(echo "$RESPONSE" | jq -r .upload_url | sed -e 's/{?name,label}//')
+          echo "$UPLOAD_URL" 
 
           # Upload the release asset (the zip file)
           curl -X POST --data-binary @alpine.zip \

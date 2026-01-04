@@ -22,11 +22,12 @@ exec 3>&1 4>&2
 exec >/dev/null 2>&1
 ALPINESETUP="source /etc/profile
 echo kindle > /etc/hostname
-echo \"nameserver 8.8.8.8\" > /etc/resolv.conf
+echo \"nameserver 1.1.1.1\" > /etc/resolv.conf
 mkdir /run/dbus
 apk update
 apk upgrade
-apk add openssh vim curl nano git wget tmux net-tools iproute2 sudo bash python3 py3-pillow ffmpeg
+apk add openssh vim curl nano git wget tmux net-tools iproute2 sudo bash 
+apk add python3 py3-pillow ffmpeg py3-pip
 # apk add desktop-file-utils gtk-engines consolekit gtk-murrine-engine caja caja-extensions marco gnome-themes-extra xorg-server-xephyr xwininfo xdotool xinput dbus-x11
 # apk add \$(apk search mate -q | grep -v '\-dev' | grep -v '\-lang' | grep -v '\-doc')
 # apk add \$(apk search -q ttf- | grep -v '\-doc')

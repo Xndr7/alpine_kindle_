@@ -15,6 +15,7 @@ if [ "$(mount | grep /tmp/alpine)" ] ; then
 	mount -o bind /sys /tmp/alpine/sys
 	mount -o bind /var/run/dbus/ /tmp/alpine/run/dbus/
 	mkdir -p /mnt/us/extensions/alpine_copy
+	mkdir -p /tmp/alpine/kindle/srv
     mount -o bind /mnt/us/extensions/alpine_copy /tmp/alpine/kindle/srv
 	cp /etc/hosts /tmp/alpine/etc/hosts
 	chmod a+w /dev/shm

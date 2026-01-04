@@ -14,7 +14,10 @@ if [ "$(mount | grep /tmp/alpine)" ] ; then
 	mount -o bind /proc /tmp/alpine/proc
 	mount -o bind /sys /tmp/alpine/sys
 	mount -o bind /var/run/dbus/ /tmp/alpine/run/dbus/
-	cp /etc/hosts /tmp/alpine/etc/hosts
+	mkdir -p /mnt/kindle/alpine_copy/srv
+    mkdir -p /tmp/alpine/kindle/srv
+    mount -o bind /mnt/kindle/alpine_copy/srv /tmp/alpine/kindle/srv
+    cp /etc/hosts /tmp/alpine/etc/hosts
 	chmod a+w /dev/shm
 fi
 
@@ -30,6 +33,7 @@ else
 
 	echo "Unmounting Alpine rootfs"
 	LOOPDEV="$(mount | grep loop | grep /tmp/alpine | cut -d" " -f1)"
+	umount /tmp/alpine/kindle/srv
 	umount /tmp/alpine/run/dbus/
 	umount /tmp/alpine/sys
 	sleep 1
